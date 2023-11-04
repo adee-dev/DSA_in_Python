@@ -1,0 +1,7 @@
+a=2
+if a==2:
+    print('hii')
+elif a==3:
+    print('bye')
+else:
+    print(':D')
