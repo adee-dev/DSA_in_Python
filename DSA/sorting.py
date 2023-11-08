@@ -1,27 +1,54 @@
 def selection_sort(l):
-    # 3 1 4 5 2
-    n=len(l)
-    if n==0:
+    n = len(l)
+    if n == 0:
         return l
     for i in range(n):
-        min_pos=i
-        for j in range(i+1, n):
-            if l[j]>l[min_pos]:
-                min_pos=j
-        l[i], l[min_pos]=l[min_pos],l[i]
+        min_pos = i
+        for j in range(i + 1, n):
+            if l[j] > l[min_pos]:
+                l[min_pos], l[j] = l[j], l[min_pos]
     return l
+
 
 def insertion_sort(l):
-    n=len(l)
-    if n==0:
+    n = len(l)
+    if n == 0:
         return l
     for i in range(n):
-        j=i
-        while(j>0 and l[j]<l[j-1]):
-            l[j],l[j-1]=l[j-1],l[j]
-            j-=1
+        j = i
+        while j > 0 and l[j] < l[j - 1]:
+            l[j], l[j - 1] = l[j - 1], l[j]
+            j -= 1
     return l
 
-l=[2,1,5,4,3]
-print(selection_sort(l))
-print(insertion_sort(l))
+def merge(A, B):
+    m,n=len(A), len(B)
+    C, i,j,k=[],0,0,0
+    while(k<m+n):
+        if i==m:
+            C.extend(B[j:])
+            k+=n-j
+        elif j==n:
+            C.extend(A[i:])
+            k+=n-i
+        elif A[i]<B[j]:
+            C.append(A[i])
+            i,k=i+1,k+1
+        else:
+            C.append(B[j])
+            j,k=j+1,k+1
+    return C
+
+def merge_sort(l):
+    n=len(l)
+    if n<=1:
+        return l
+    L=merge_sort(l[:n//2])
+    R=merge_sort(l[n//2:])
+    B=merge(L, R)
+    return B
+
+l = [3, 1, 5, 4, 2]
+# print(selection_sort(l))
+# print(insertion_sort(l))
+print(merge_sort(l))
