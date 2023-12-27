@@ -1,55 +1,59 @@
-class Node:
-    def __init__(self, v=None):
-        self.v=v
-        self.next=None
-        return
-    
-    def is_empty(self):
-        return True if self.v==None else False
+"""
+binary search
+"""
 
-    def append(self, v):
-        if self.is_empty():
-            self.v=v
-        elif self.next==None:
-            self.next=Node(v)
-        else:
-            self.next.append(v)
-        return
-        
-    def insert(self,v):
-        if self.is_empty():
-            self.v=v
-        new_node=Node(v)
-        self.v, new_node.v=new_node.v, self.v
-        self.next, new_node.next=new_node, self.next
-        return
-        
-    def delete(self,v):
-        if self.is_empty():
-            return
-        if self.v==v:
-            self.v=None
-            if self.next!=None:
-                self.v=self.next.v
-                self.next=self.next.next
-            return
-        else:
-            if self.next!=None:
-                self.next.delete(v)
-                if self.next.v==None:
-                    self.next=None
-        
-    def printer(self):
-        while(self!=None):
-            print(self.v)
-            self=self.next
-        # return
 
-# 1 2 3 4 5
-n=Node(1)
-n.append(2)
-n.append(3)
-n.insert(0)
-n.insert(-1)
-n.delete(3)
-n.printer()
+def binary_search(l, k):
+    if l == []:
+        return False
+    mid = len(l) // 2
+    if l[mid] == k:
+        return True
+    elif l[mid] < k:
+        return binary_search(l[mid + 1 :], k)
+    else:
+        return binary_search(l[:mid], k)
+
+
+"""
+selection sort
+"""
+
+
+def selection_sort(l):
+    # 5 1 3 2 4
+    n = len(l)
+    if n < 1:
+        return l
+    for i in range(n):
+        min_position = i
+        for j in range(i + 1, n):
+            if l[j] < l[min_position]:
+                min_position = j
+        l[min_position], l[i] = l[i], l[min_position]
+    return l
+
+
+"""
+insertion sort
+"""
+
+
+def insertion_sort(l):
+    n = len(l)
+    if n < 1:
+        return l
+    for i in range(n):
+        j = i
+        while l[j] < l[j - 1] and j > 0:
+            l[j], l[j - 1] = l[j - 1], l[j]
+            j -= 1
+    return l
+
+
+# l = list(range(10))
+l = [5, 1, 3, 2, 4]
+# print(selection_sort(l))
+print(insertion_sort(l))
+# k = 99
+# print(binary_search(l, k))
