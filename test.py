@@ -1,86 +1,89 @@
-def binary_search(l, k):
-    n = len(l)
-    if n == 0:
-        return False
-    mid = n // 2
-    if l[mid] == k:
-        return True
-    elif l[mid] < k:
-        return binary_search(l[mid + 1 :], k)
-    else:
-        return binary_search(l[:mid], k)
-
-
-def selection_sort(l):
-    n = len(l)
-    if n == 0:
-        return l
-    for i in range(n):
-        minpos = i
-        for j in range(i + 1, n):
-            if l[minpos] > l[j]:
-                l[minpos], l[j] = l[j], l[minpos]
-    return l
-
-
-def insertion_sort(l):
-    n = len(l)
-    if n == 0:
-        return l
-    for i in range(n):
-        j = i
-        while j > 0 and l[j] < l[j - 1]:
-            l[j], l[j - 1] = l[j - 1], l[j]
-            j -= 1
-    return l
-
-
-def merge(A, B):
-    m, n = len(A), len(B)
-    C, i, j, k = [], 0, 0, 0
-    while k < m + n:
-        if j == n:
-            C.extend(A[i:])
-            k += m - i
-        elif i == m:
-            C.extend(B[j:])
-            k += n - j
-        elif A[i] < B[j]:
-            C.append(A[i])
-            k, i = k + 1, i + 1
+class Node:
+    def __init__(self,v=None):
+        self.v=v
+        self.next=None
+    
+    def isEmpty(self):
+        return False if self.v!=None else True
+    
+    def append(self, v):
+        if self.isEmpty():
+            self.v=v
+            return
+        elif self.next==None:
+            self.next=Node(v)
         else:
-            C.append(B[j])
-            k, j = k + 1, j + 1
-    return C
+            self.next.append(v)
+    
+    def printer(self):
+        while self is not None:
+            print(self.v, end=' -> ')
+            self=self.next
+    
+    def delete(self,v):
+        if self.isEmpty():
+            return
+        elif self.v==v:
+            self.v=self.next.v
+            self.next=self.next.next
+        else:
+            self.next.delete(v)
+        return
+    
+    def insert_f(self,v):
+        if self.isEmpty():
+            self.v=v
+        else:
+            node=Node(v)
+            node.v, self.v=self.v, node.v
+            self.next,node.next=node,self.next
+    
+    def insert_l(self,v):
+        if self.isEmpty():
+            self.v=v
+        else:
+            while self.next is not None:
+                self=self.next
+            self.next=Node(v)
+    
+    def insert_ith(self,i,v):
+        if self.isEmpty():
+            return
+        for _ in range(i-1):
+            self=self.next
+        node=Node(v)
+        self.next, node.next=node, self.next
+    
+    def delete_ith(self,i):
+        if self.isEmpty():
+            return
+        for _ in range(i-1):
+            self=self.next
+        self.next=self.next.next
 
 
-def merge_sort(l):
-    n = len(l)
-    if n <= 1:
-        return l
-    L = merge_sort(l[: n // 2])
-    R = merge_sort(l[n // 2 :])
-
-    C = merge(L, R)
-    return C
-
-
-def quick_sort(l):
-    n = len(l)
-    if n <= 1:
-        return l
-    pivot = l[0]
-    L = [x for x in l[1:] if x < pivot]
-    R = [x for x in l[1:] if x >= pivot]
-    return quick_sort(L) + [pivot] + quick_sort(R)
-
-
-# l = list(range(10))
-l = [4, 7, 1, 0, 2, 8, 3, 9, 5, 6]
-print(l)
-# k = 7
-# print(binary_search(l, k))
-# print(selection_sort(l))
-# print(insertion_sort(l))
-# print(merge_sort(l))
-print(quick_sort(l))
+n=Node()
+# print(n.isEmpty())
+n.append(1)
+n.append(2)
+n.append(3)
+n.append(4)
+n.append(5)
+n.append(6)
+n.append(7)
+print(n.printer())
+n.delete(3)
+n.delete(6)
+print(n.printer())
+n.insert_f(0)
+print(n.printer())
+n.insert_f(-1)
+print(n.printer())
+n.delete(-1)
+print(n.printer())
+n.insert_l(8)
+print(n.printer())
+n.insert_ith(3,99)
+print(n.printer())
+n.delete_ith(4)
+print(n.printer())
